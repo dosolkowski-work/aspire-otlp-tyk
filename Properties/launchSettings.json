@@ -1,29 +1,30 @@
 {
-    "$schema": "https://json.schemastore.org/launchsettings.json",
-    "profiles": {
-        "https": {
-            "commandName": "Project",
-            "dotnetRunMessages": true,
-            "launchBrowser": true,
-            "applicationUrl": "https://aspireapp.dev.localhost:17208;http://aspireapp.dev.localhost:15187",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "DOTNET_ENVIRONMENT": "Development",
-                "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21024",
-                "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22263"
-            }
-        },
-        "http": {
-            "commandName": "Project",
-            "dotnetRunMessages": true,
-            "launchBrowser": true,
-            "applicationUrl": "http://aspireapp.dev.localhost:15187",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "DOTNET_ENVIRONMENT": "Development",
-                "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "http://localhost:19246",
-                "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "http://localhost:20049"
-            }
-        }
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://aspireapp.dev.localhost:17208;http://aspireapp.dev.localhost:15187",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21024",
+        "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22263"
+      }
+    },
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://aspireapp.dev.localhost:15187",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "http://localhost:19246",
+        "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "http://localhost:20049",
+        "ASPIRE_ALLOW_UNSECURED_TRANSPORT": "true"
+      }
     }
+  }
 }

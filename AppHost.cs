@@ -10,7 +10,7 @@ var redis = builder.AddRedis("tyk-cache").WithPassword(redisPassword).WithRedisI
 
 const string tykService = "tyk-gateway";
 const string tykOtelFormat = "grpc";
-string tykOtelUseTls = bool.TrueString.ToLowerInvariant(); // Using the https launch profile
+string tykOtelUseTls = bool.FalseString.ToLowerInvariant(); // Using the http launch profile
 var tykPassword = builder.AddParameter("tyk-password", "tykLocal", secret: true);
 builder
     .AddContainer(tykService, "tykio/tyk-gateway", "v5.14.0")
