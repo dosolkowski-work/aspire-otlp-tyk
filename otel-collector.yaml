@@ -21,7 +21,7 @@ exporters:
   debug:
     verbosity: detailed
   otlp_grpc/aspire:
-    endpoint: ${env:ASPIRE_ENDPOINT}
+    endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
     headers:
       x-otlp-api-key: ${env:ASPIRE_API_KEY}
   

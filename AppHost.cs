@@ -3,10 +3,10 @@ var builder = DistributedApplication.CreateBuilder(args);
 var redisPassword = builder.AddParameter("redis-password", "redisLocal", secret: true);
 var redis = builder.AddRedis("tyk-cache").WithPassword(redisPassword).WithRedisInsight();
 
-/*var otelCollector = builder
+var otelCollector = builder
     .AddOpenTelemetryCollector("otel-collector")
     .WithConfig("otel-collector.yaml")
-    .WithOtlpExporter();*/
+    .WithOtlpExporter();
 
 const string tykService = "tyk-gateway";
 var tykPassword = builder.AddParameter("tyk-password", "tykLocal", secret: true);
