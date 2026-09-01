@@ -14,15 +14,14 @@ string tykOtelUseTls = bool.FalseString.ToLowerInvariant(); // Using the http la
 var tykPassword = builder.AddParameter("tyk-password", "tykLocal", secret: true);
 builder
     .AddContainer(tykService, "tykio/tyk-gateway", "v5.14.0")
-    // Tried to get HTTPS working which might require custom certificate integration, but no luck with the following
-    /*.WithCertificateTrustConfiguration(context =>
+    .WithCertificateTrustConfiguration(context =>
     {
         //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TLS_CAFILE"] = context.CertificateBundlePath;
         context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_TLS_CAFILE"] = context.CertificateBundlePath;
-        context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_TLS_CAFILE"] = context.CertificateBundlePath;
+        //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_TLS_CAFILE"] = context.CertificateBundlePath;
 
         return Task.CompletedTask;
-    })*/
+    })
     .WithOtlpExporter()
     .WithEnvironment(context =>
     {
@@ -33,7 +32,7 @@ builder
             var reference = ReferenceExpression.Create($"{endpoint.Property(EndpointProperty.HostAndPort)}");
             //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_ENDPOINT"] = reference;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_ENDPOINT"] = reference;
-            context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_ENDPOINT"] = reference;
+            //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_ENDPOINT"] = reference;
         }
 
         if (context.EnvironmentVariables["OTEL_EXPORTER_OTLP_HEADERS"] is string headers)
@@ -43,7 +42,7 @@ builder
             string tykHeaders = headers.Replace("=", ":", StringComparison.Ordinal);
             //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_HEADERS"] = tykHeaders;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_HEADERS"] = tykHeaders;
-            context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_HEADERS"] = tykHeaders;
+            //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_HEADERS"] = tykHeaders;
         }
     })
     .WithEnvironment("TYK_GW_LOGLEVEL", "debug")
@@ -64,17 +63,17 @@ builder
     // OTel Traces
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_ENABLED", "true")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_EXPORTER", tykOtelFormat)
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONNECTIONTIMEOUT", "10")
+    .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONNECTIONTIMEOUT", "100000")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_RESOURCENAME", tykService)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_TLS_ENABLE", tykOtelUseTls)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONTEXTPROPAGATION", "tracecontext")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_SAMPLING_TYPE", "AlwaysOn")
     // OTel Metrics
     .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_ENABLED", "true")
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_EXPORTER", tykOtelFormat)
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_CONNECTIONTIMEOUT", "10")
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_RESOURCENAME", tykService)
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_TLS_ENABLE", tykOtelUseTls)
+    //.WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_EXPORTER", tykOtelFormat)
+    //.WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_CONNECTIONTIMEOUT", "10")
+    //.WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_RESOURCENAME", tykService)
+    //.WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_TLS_ENABLE", tykOtelUseTls)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_EXPORTINTERVAL", "15")
     .WithEnvironment("TYK_GW_SECRET", tykPassword)
     .WithEnvironment("TYK_GW_STORAGE_USESSL", "true")
