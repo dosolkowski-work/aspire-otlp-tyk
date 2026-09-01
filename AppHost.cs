@@ -63,7 +63,7 @@ builder
     // OTel Traces
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_ENABLED", "true")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_EXPORTER", tykOtelFormat)
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONNECTIONTIMEOUT", "100000")
+    .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONNECTIONTIMEOUT", "100000") // Longer timeout is necessary for Aspire! Tyk's default results in timeout errors!
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_RESOURCENAME", tykService)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_TLS_ENABLE", tykOtelUseTls)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONTEXTPROPAGATION", "tracecontext")
