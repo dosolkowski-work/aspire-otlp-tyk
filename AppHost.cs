@@ -6,7 +6,7 @@ var redis = builder.AddRedis("tyk-cache").WithPassword(redisPassword).WithRedisI
 /*var otelCollector = builder
     .AddOpenTelemetryCollector("otel-collector")
     .WithConfig("otel-collector.yaml")
-    .WithOtlpExporter(OtlpProtocol.Grpc);*/
+    .WithOtlpExporter();*/
 
 const string tykService = "tyk-gateway";
 const string tykOtelFormat = "grpc";
@@ -23,7 +23,7 @@ builder
 
         return Task.CompletedTask;
     })*/
-    .WithOtlpExporter(OtlpProtocol.Grpc)
+    .WithOtlpExporter()
     .WithEnvironment(context =>
     {
         if (context.EnvironmentVariables["OTEL_EXPORTER_OTLP_ENDPOINT"] is EndpointReference endpoint)
