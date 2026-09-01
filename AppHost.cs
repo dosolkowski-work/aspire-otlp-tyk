@@ -9,12 +9,12 @@ var redis = builder.AddRedis("tyk-cache").WithPassword(redisPassword).WithRedisI
     .WithOtlpExporter(OtlpProtocol.Grpc);*/
 
 const string tykService = "tyk-gateway";
-const string tykOtelFormat = "http"; // Also tried grpc but that doesn't work
+const string tykOtelFormat = "grpc";
 string tykOtelUseTls = bool.TrueString.ToLowerInvariant();
 var tykPassword = builder.AddParameter("tyk-password", "tykLocal", secret: true);
 builder
     .AddContainer(tykService, "tykio/tyk-gateway", "v5.14.0")
-    .WithOtlpExporter(OtlpProtocol.HttpJson)
+    .WithOtlpExporter(OtlpProtocol.Grpc)
     .WithEnvironment(context =>
     {
         if (context.EnvironmentVariables["OTEL_EXPORTER_OTLP_ENDPOINT"] is EndpointReference endpoint)
@@ -67,7 +67,6 @@ builder
     .WithEnvironment("TYK_GW_STORAGE_HOST", redis.Resource.Host)
     .WithEnvironment("TYK_GW_STORAGE_PORT", redis.Resource.Port)
     .WithEnvironment("TYK_GW_STORAGE_PASSWORD", redisPassword)
-    .WithEnvironment("OTEL_EXPORTER_OTLP_PROTOCOL", "http")
     .WithBindMount("TykApps", "/opt/tyk-gateway/apps")
     .WithHttpEndpoint(8080, 8080, "data")
     .WithHttpEndpoint(8081, 8081, "control")
