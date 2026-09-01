@@ -15,6 +15,7 @@ builder
     .AddContainer(tykService, "tykio/tyk-gateway", "v5.14.0")
     .WithCertificateTrustConfiguration(context =>
     {
+        context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_TLS_ENABLE"] = "true";
         context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_TLS_CAFILE"] = context.CertificateBundlePath;
 
         return Task.CompletedTask;
@@ -43,7 +44,6 @@ builder
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_EXPORTER", tykOtelFormat)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONNECTIONTIMEOUT", "10")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_RESOURCENAME", tykService)
-    .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_TLS_ENABLE", "true")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_CONTEXTPROPAGATION", "tracecontext")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_SAMPLING_TYPE", "AlwaysOn")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_METRICS_ENABLED", "true")
