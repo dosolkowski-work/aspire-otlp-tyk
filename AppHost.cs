@@ -20,7 +20,7 @@ builder
 
         return Task.CompletedTask;
     })
-    .WithOtlpExporter(OtlpProtocol.Grpc)
+    .WithOtlpExporter()
     .WithEnvironment(context =>
     {
         if (context.EnvironmentVariables["OTEL_EXPORTER_OTLP_ENDPOINT"] is EndpointReference endpoint)
