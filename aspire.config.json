@@ -1,0 +1,6 @@
+{
+    "appHost": {
+        "path": "aspire-otlp-tyk.csproj"
+    },
+    "channel": "stable"
+}
