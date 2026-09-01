@@ -10,7 +10,7 @@ var redis = builder.AddRedis("tyk-cache").WithPassword(redisPassword).WithRedisI
 
 const string tykService = "tyk-gateway";
 const string tykOtelFormat = "grpc";
-string tykOtelUseTls = bool.TrueString.ToLowerInvariant();
+string tykOtelUseTls = bool.TrueString.ToLowerInvariant(); // Using the https launch profile
 var tykPassword = builder.AddParameter("tyk-password", "tykLocal", secret: true);
 builder
     .AddContainer(tykService, "tykio/tyk-gateway", "v5.14.0")
@@ -19,6 +19,8 @@ builder
     {
         if (context.EnvironmentVariables["OTEL_EXPORTER_OTLP_ENDPOINT"] is EndpointReference endpoint)
         {
+            // Note that just hard-coding this to "localhost:21024" (matching ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL in launchSettings)
+            // does not work either.
             var reference = ReferenceExpression.Create($"{endpoint.Property(EndpointProperty.HostAndPort)}");
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_ENDPOINT"] = reference;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_ENDPOINT"] = reference;
@@ -28,7 +30,7 @@ builder
         if (context.EnvironmentVariables["OTEL_EXPORTER_OTLP_HEADERS"] is string headers)
         {
             // This shouldn't be here because we set Dashboard:Otlp:AuthMode to Unsecured, but it is anyway, and even
-            // though it is here, we get 403 errors from trying to send telemetry via http.
+            // though it is here, we got 403 errors from trying to send telemetry via http.
             string tykHeaders = headers.Replace("=", ":", StringComparison.Ordinal);
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_HEADERS"] = tykHeaders;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_HEADERS"] = tykHeaders;
