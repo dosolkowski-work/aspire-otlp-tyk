@@ -14,6 +14,15 @@ string tykOtelUseTls = bool.TrueString.ToLowerInvariant(); // Using the https la
 var tykPassword = builder.AddParameter("tyk-password", "tykLocal", secret: true);
 builder
     .AddContainer(tykService, "tykio/tyk-gateway", "v5.14.0")
+    // Tried to get HTTPS working which might require custom certificate integration, but no luck with the following
+    /*.WithCertificateTrustConfiguration(context =>
+    {
+        context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TLS_CAFILE"] = context.CertificateBundlePath;
+        context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_TLS_CAFILE"] = context.CertificateBundlePath;
+        context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_TLS_CAFILE"] = context.CertificateBundlePath;
+
+        return Task.CompletedTask;
+    })*/
     .WithOtlpExporter(OtlpProtocol.Grpc)
     .WithEnvironment(context =>
     {
