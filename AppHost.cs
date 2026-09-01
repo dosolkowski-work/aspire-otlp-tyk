@@ -17,7 +17,7 @@ builder
     // Tried to get HTTPS working which might require custom certificate integration, but no luck with the following
     /*.WithCertificateTrustConfiguration(context =>
     {
-        context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TLS_CAFILE"] = context.CertificateBundlePath;
+        //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TLS_CAFILE"] = context.CertificateBundlePath;
         context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_TLS_CAFILE"] = context.CertificateBundlePath;
         context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_TLS_CAFILE"] = context.CertificateBundlePath;
 
@@ -31,7 +31,7 @@ builder
             // Note that just hard-coding this to "localhost:21024" (matching ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL in launchSettings)
             // does not work either.
             var reference = ReferenceExpression.Create($"{endpoint.Property(EndpointProperty.HostAndPort)}");
-            context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_ENDPOINT"] = reference;
+            //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_ENDPOINT"] = reference;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_ENDPOINT"] = reference;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_ENDPOINT"] = reference;
         }
@@ -41,16 +41,18 @@ builder
             // This shouldn't be here because we set Dashboard:Otlp:AuthMode to Unsecured, but it is anyway, and even
             // though it is here, we got 403 errors from trying to send telemetry via http.
             string tykHeaders = headers.Replace("=", ":", StringComparison.Ordinal);
-            context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_HEADERS"] = tykHeaders;
+            //context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_HEADERS"] = tykHeaders;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_TRACES_HEADERS"] = tykHeaders;
             context.EnvironmentVariables["TYK_GW_OPENTELEMETRY_METRICS_HEADERS"] = tykHeaders;
         }
     })
+    .WithEnvironment("TYK_GW_LOGLEVEL", "debug")
     .WithEnvironment("TYK_GW_LISTENPORT", "8080")
     .WithEnvironment("TYK_GW_CONTROLAPIPORT", "8081")
     .WithEnvironment("TYK_GW_LOGFORMAT", "json")
     .WithEnvironment("TYK_GW_ACCESSLOGS_ENABLED", "true")
     // General OTel
+    /*
     .WithEnvironment("TYK_GW_OPENTELEMETRY_ENABLED", "true")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_EXPORTER", tykOtelFormat)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_CONNECTIONTIMEOUT", "10")
@@ -58,6 +60,7 @@ builder
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TLS_ENABLE", tykOtelUseTls)
     .WithEnvironment("TYK_GW_OPENTELEMETRY_CONTEXTPROPAGATION", "tracecontext")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_SAMPLING_TYPE", "AlwaysOn")
+    */
     // OTel Traces
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_ENABLED", "true")
     .WithEnvironment("TYK_GW_OPENTELEMETRY_TRACES_EXPORTER", tykOtelFormat)
